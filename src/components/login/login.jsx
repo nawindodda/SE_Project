@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({loggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
+    loggedIn(true)
+    navigate('/backeryItemsList');
+
   };
+
+
 
   return (
     <div className="container">
@@ -17,7 +21,7 @@ const Login = () => {
         <div className="col-md-6">
           <div className="card mt-5">
             <div className="card-body">
-              <h3 className="card-title text-center">Login</h3>
+              <h3 className="card-title text-center">Bakery Shop Login</h3>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">Email address</label>
@@ -41,7 +45,10 @@ const Login = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary btn-block mt-4">Login</button>
+                <div className='d-flex'>
+                <button type="submit" className="btn btn-primary btn-block mt-4">Login</button>&nbsp;
+                <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}><Link to="/signup">Sign Up</Link></button>
+                </div>
               </form>
             </div>
           </div>
