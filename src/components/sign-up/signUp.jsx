@@ -45,7 +45,7 @@ const SignUp = () => {
       const fetchData = async () => {
         try {
           const response = await axios.post('http://localhost:5000/signup', formData);
-          toast.success('Data submitted successfully!');
+          toast.success('User Created successfully!');
           console.log('vkbfhvbfhv', response)
           navigate('/login');
           // setData(response.data);

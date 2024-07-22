@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const employees = [
   { id: 1, name: "Alice Johnson" },
@@ -36,6 +36,7 @@ const days = [
 
 const EmployeeSchedule = () => {
   const [schedule, setSchedule] = useState([]);
+  const [loading ,  setLoading] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,54 +57,70 @@ const EmployeeSchedule = () => {
           return schedule;
         };
         setSchedule(generateSchedule());
+        setTimeout(() =>{
+          setLoading(true)
+        }, 3000)
       } catch (err) {
         return;
       }
     };
 
     fetchData();
-    const generateSchedule = () => {
-      let schedule = days.map((day) => ({
-        day,
-        shifts: shifts.map((shift, index) => ({
-          shift,
-          employee:
-            employees[
-              (days.indexOf(day) * shifts.length + index) % employees.length
-            ].name,
-        })),
-      }));
-      return schedule;
-    };
-    setSchedule(generateSchedule());
+    // const generateSchedule = () => {
+    //   let schedule = days.map((day) => ({
+    //     day,
+    //     shifts: shifts.map((shift, index) => ({
+    //       shift,
+    //       employee:
+    //         employees[
+    //           (days.indexOf(day) * shifts.length + index) % employees.length
+    //         ].name,
+    //     })),
+    //   }));
+    //   return schedule;
+    // };
+    // setSchedule(generateSchedule());
   }, []);
 
   return (
-    <div className="container mt-5">
-      <h3 className="mb-3" style={{ color: "#14738c" }}>
-        Weekly Employee Schedule
-      </h3>
-      <table className="table table-striped table-bordered table-hover">
-        <thead className="thead-dark" style={{ color: "#14738c" }}>
-          <tr>
-            <th>Day</th>
-            {shifts.map((shift, index) => (
-              <th key={index}>{shift}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {schedule.map((day, index) => (
-            <tr key={index}>
-              <td>{day.day}</td>
-              {day.shifts.map((shift, index) => (
-                <td key={index}>{shift.employee}</td>
+    <React.Fragment>
+      {!loading ? (
+        <div
+          class="d-flex justify-content-center align-items-center"
+          style={{ height: "100vh" }}
+        >
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <div className="container mt-5">
+          <h3 className="mb-3" style={{ color: "#14738c" }}>
+            Weekly Employee Schedule
+          </h3>
+          <table className="table table-striped table-bordered table-hover">
+            <thead className="thead-dark" style={{ color: "#14738c" }}>
+              <tr>
+                <th>Day</th>
+                {shifts.map((shift, index) => (
+                  <th key={index}>{shift}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {schedule.map((day, index) => (
+                <tr key={index}>
+                  <td>{day.day}</td>
+                  {day.shifts.map((shift, index) => (
+                    <td key={index}>{shift.employee}</td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 

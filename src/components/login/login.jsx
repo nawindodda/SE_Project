@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import "bootstrap/dist/css/bootstrap.min.css";
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
@@ -12,28 +13,26 @@ const Login = ({loggedIn}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    loggedIn(true)
-    // const fetchData = async () => {
-    //   const payload ={
-    //     email: email,
-    //     password: password
-    //   }
-    //   try {
-    //     const response = await axios.post('http://localhost:5000/login', payload);
-    //     toast.success('Logged in successfully!');
-    //     console.log('vkbfhvbfhv', response)
-    //     navigate('/backeryItemsList');
-    //     // setData(response.data);
-    //   } catch (err) {
-    //     debugger
-    //     //toast.error('Data submitted successfully!');
-    //     return;
-    //   }
-    // };
+    const fetchData = async () => {
+      const payload ={
+        email: email,
+        password: password
+      }
+      try {
+        const response = await axios.post('http://localhost:5000/login', payload);
+        toast.success('Logged in successfully!');
+        navigate('/backeryItemsList');
+        loggedIn(true)
+        debugger
+        console.log('vkbfhvbfhv', response)
+      } catch (err) {
+        debugger
+        //toast.error('Data submitted successfully!');
+        return;
+      }
+    };
 
-    // fetchData();
-    navigate('/backeryItemsList');
-
+    fetchData();
   };
 
 

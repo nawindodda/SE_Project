@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './bakeryItemsList.css'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 const bakeryItems = [
   {
     name: "Chocolate Cake",
@@ -155,6 +155,7 @@ function BackeryItemsList() {
 
   const [data, setData] = useState([]);
   const [loading ,  setLoading] = useState(false)
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -163,7 +164,7 @@ function BackeryItemsList() {
         setData(response.data);
         setTimeout(() =>{
           setLoading(true)
-        }, 5000)
+        }, 3000)
       } catch (err) {
         return;
       }
@@ -178,6 +179,10 @@ function BackeryItemsList() {
     newItems[index].quantity = parseInt(newItems[index].quantity, 10) + 1;
     setData(newItems);
   };
+
+  const toOrders = () =>{
+    navigate('/orders')
+  }
 
   const handleDecrease = (index) => {
     const newItems = [...data];
@@ -233,7 +238,7 @@ function BackeryItemsList() {
                     +
                   </button>
                   &nbsp;
-                  <button className="btn btn-primary">Order</button>
+                  <button className="btn btn-primary" disabled={item.quantity==0} onClick={toOrders}>Order</button>
                 </div>
               </div>
             </div>
