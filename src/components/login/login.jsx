@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
+import axios from 'axios';
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Login = ({loggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -9,6 +11,25 @@ const Login = ({loggedIn}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     loggedIn(true)
+    // const fetchData = async () => {
+    //   const payload ={
+    //     email: email,
+    //     password: password
+    //   }
+    //   try {
+    //     const response = await axios.post('http://localhost:5000/login', payload);
+    //     toast.success('Logged in successfully!');
+    //     console.log('vkbfhvbfhv', response)
+    //     navigate('/backeryItemsList');
+    //     // setData(response.data);
+    //   } catch (err) {
+    //     debugger
+    //     //toast.error('Data submitted successfully!');
+    //     return;
+    //   }
+    // };
+
+    // fetchData();
     navigate('/backeryItemsList');
 
   };
@@ -17,6 +38,7 @@ const Login = ({loggedIn}) => {
 
   return (
     <div className="container">
+      <ToastContainer/>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card mt-5">

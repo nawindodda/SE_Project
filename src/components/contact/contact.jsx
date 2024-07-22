@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import axios from "axios";
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const ContactUs = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -9,11 +11,30 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Name: ${name}, Email: ${email}, Phone: ${phone}, Message: ${message}`);
+    const payload = {
+      name: name,
+      email: email,
+      phone: phone,
+      message: message,
+    };
+    const postOrder = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/contactus",
+          payload
+        );
+        toast.success('Conatct information successfully sent!');
+      } catch (err) {
+        return;
+      }
+    };
+
+    postOrder();
   };
 
   return (
     <div className="container mt-5">
+      <ToastContainer/>
 <h3 className="mb-3" style={{ color: "#14738c" }}>
         Contact Us
       </h3>      <form onSubmit={handleSubmit}>

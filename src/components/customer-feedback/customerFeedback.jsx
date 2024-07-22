@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 const CustomerFeedback = () => {
   const [reviews, setReviews] = useState([
@@ -14,16 +15,46 @@ const CustomerFeedback = () => {
     { id: 10, name: "Isabel Johnson", text: "Checkout process was seamless and fast.", replies: [] }
   ]);
 
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/comments');
+      setReviews(response.data);
+    } catch (err) {
+      return;
+    }
+  };
+
   const addReply = (reviewId, name, replyText) => {
-    setReviews(reviews => reviews.map(review => {
-      if (review.id === reviewId) {
-        return {
-          ...review,
-          replies: [...review.replies, { id: review.replies.length + 1, name, text: replyText }]
-        };
+
+    const payload ={
+      id:reviewId,
+      name: name,
+      text:replyText
+    }
+    const postComments = async () => {
+      try {
+        const response = await axios.post('http://localhost:5000/comments', payload);
+        fetchData();
+      } catch (err) {
+        return;
       }
-      return review;
-    }));
+    };
+
+    postComments();
+    // setReviews(reviews => reviews.map(review => {
+    //   if (review.id === reviewId) {
+    //     return {
+    //       ...review,
+    //       replies: [...review.replies, { id: review.replies.length + 1, name, text: replyText }]
+    //     };
+    //   }
+    //   return review;
+    // }));
   };
 
   return (

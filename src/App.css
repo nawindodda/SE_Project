@@ -30,7 +30,7 @@
 
 .search-container {
   position: relative;
-  max-width: 600px; /* Adjust the width as needed */
+  max-width: 600px;
   border: 1px solid #ccc;
   border-radius: 25px;
   overflow: hidden;

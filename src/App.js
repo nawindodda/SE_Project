@@ -15,6 +15,7 @@ import EmployeeSchedule from './components/employees/employees'
 import CustomerFeedback from './components/customer-feedback/customerFeedback'
 import IngredientsTable from './components/inventory/ingredients'
 import ContactUs from './components/contact/contact'
+import Orders from './components/orders/order'
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const loggedIn = (bool) => {
@@ -27,7 +28,7 @@ function App() {
           <div className="app">
             <div className="row m-0">
               <div className="col-1">
-                <Sidenav />
+                <Sidenav loggedIn={loggedIn}/>
               </div>
               <div className="content col-11">
                 {/* <div className="search-container mt-4 mb-4">
@@ -42,13 +43,13 @@ function App() {
               </button>
             </div> */}
                 <div className="sticky-top"></div>
-                <Routes>ContactUs
+                <Routes>
                   <Route path="/backeryItemsList" element={<BackeryItemsList />} />
                   <Route path="/ingredients" element={<IngredientsTable/>} />
                   <Route path="/employees-shifts" element={<EmployeeSchedule/>} />
                   <Route path="/customer-feedback" element={<CustomerFeedback/>} />
                   <Route path="/contactus" element={<ContactUs/>} />
-                  <Route path="/" element={<Navigate to="/patientReport" />} />
+                  <Route path="/orders" element={<Orders/>} />
                 </Routes>
               </div>
             </div>

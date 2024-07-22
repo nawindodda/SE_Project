@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './signUp.css';
-
+import axios from 'axios';
+import {ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -38,6 +42,20 @@ const SignUp = () => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length === 0) {
+      const fetchData = async () => {
+        try {
+          const response = await axios.post('http://localhost:5000/signup', formData);
+          toast.success('Data submitted successfully!');
+          console.log('vkbfhvbfhv', response)
+          navigate('/login');
+          // setData(response.data);
+        } catch (err) {
+          //toast.error('Data submitted successfully!');
+          return;
+        }
+      };
+  
+      fetchData();
       console.log('Form data:', formData);
       // Submit form data to the server
     } else {
@@ -47,6 +65,7 @@ const SignUp = () => {
 
   return (
     <div className="sign-up-container">
+      <ToastContainer/>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -93,7 +112,7 @@ const SignUp = () => {
           />
           {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
         </div>
-        <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}><Link to="/login">Sign Up</Link></button>
+        <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}>Sign Up</button>
       </form>
     </div>
   );

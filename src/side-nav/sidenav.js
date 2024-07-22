@@ -10,8 +10,11 @@ import Icon4 from '../assets/menu-icons/Globe.png'
 import Icon5 from '../assets/menu-icons/Icon.png'
 import { useLocation } from 'react-router-dom';
 
-function Sidenav() {
+const  Sidenav = ({loggedIn}) => {
   const location = useLocation();
+const logout = () =>{
+  loggedIn(false)
+}
   return (
     <div className="sidebar sticky-top">
     <ul>
@@ -21,6 +24,7 @@ function Sidenav() {
         <li><Link to="/employees-shifts" className={location.pathname.includes('Patients-data')?'selcted':''}><img src={Icon5} alt=''/></Link></li>
         <li><Link to="/customer-feedback"><img src={Icon3} alt=''/></Link></li>
         <li><Link to="/contactus"><img src={Icon2} alt=''/></Link></li>
+        <li onClick={logout}><Link to="/login"><i className="bi bi-box-arrow-right"></i></Link></li>
       </ul>
     </ul>
   </div>

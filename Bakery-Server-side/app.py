@@ -53,11 +53,18 @@ Base = declarative_base()
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(100), nullable=False)
     username=db.Column(db.String(100), unique=True, nullable=False)
     email=db.Column(db.String(100), unique=True, nullable=False)
     password=db.Column(db.String(100), nullable=False)
-    mobile=db.Column(db.BigInteger)
+    confirmPassword=db.Column(db.String(100), nullable=False)
+
+class LoginData(db.Model):
+    __tablename__ = 'loginData'
+    id = db.Column(db.Integer, primary_key=True)
+    username=db.Column(db.String(100), unique=True, nullable=False)
+    email=db.Column(db.String(100), unique=True, nullable=False)
+    password=db.Column(db.String(100), nullable=False)
+    confirmPassword=db.Column(db.String(100), nullable=False)
     
 # Define the Bakery class
 class Bakery(db.Model):
@@ -91,6 +98,15 @@ class Contactus(db.Model):
     email=db.Column(db.String(100))
     phone=db.Column(db.BigInteger)
     message=db.Column(db.String(100))
+
+# Define the Contactus class
+class OrdersConfrimationList(db.Model):
+    __tablename__ = 'ordersconfirmationlist'
+    id = db.Column(db.Integer, primary_key=True)
+    name=db.Column(db.String(100))
+    email=db.Column(db.String(100))
+    phone=db.Column(db.BigInteger)
+    address=db.Column(db.String(100))
     
 # Define the Comment model
 class Comments(db.Model):
@@ -126,16 +142,17 @@ def root():
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
-    name = data.get('name')
-    mobile = data.get('mobile')
+    # name = data.get('name')
+    # mobile = data.get('mobile')
     email = data.get('email')
     password = data.get('password')
+    confirmPassword = data.get('confirmPassword')
     username = data.get('username')
     
-    if not name or not mobile or not email or not password or not username:
+    if  not email or not password or not confirmPassword or not username:
         return jsonify({"error": "Missing required fields"}), 400
     
-    new_user = User(name=name, mobile=mobile, email=email, password=password,username=username)
+    new_user = LoginData( email=email, password=password,confirmPassword=confirmPassword,username=username)
     
     try:
         db.session.add(new_user)
@@ -148,6 +165,7 @@ def signup():
 
 @app.route('/login', methods=['POST'])
 def login():
+    
     data = request.get_json()
     username = data.get('username')
     email = data.get('email')  # Can be mobile or email
@@ -158,12 +176,12 @@ def login():
 
     # Find the user by username or email
     # user = User.query.filter(User.username == username).first()
-    user = User.query.filter(User.email == email).first()
+    user = LoginData.query.filter(LoginData.email == email).first()
     
     if user and (user.password == password):
         # Store user info in session
         session['user_id'] = user.id
-        session['user_name'] = user.name
+        session['user_email'] = user.email
         return jsonify({"message": "Login successful"}), 200
     else:
         return jsonify({"error": "Invalid credentials"}), 401
@@ -297,7 +315,27 @@ def get_contactus():
 
     return jsonify(results), 200
 
+# Define the route for the POST request to add all Contact Us 
+@app.route('/order-confirmation', methods=['POST'])
+def add_orders():
+    data = request.get_json()
+    
+    name = data.get('name')
+    phone = data.get('phone')
+    email = data.get('email')
+    address = data.get('address')
 
+    
+    new_order = OrdersConfrimationList(name=name, phone=phone, email=email, address=address)
+    
+    try:
+        db.session.add(new_order)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "Error while saving contact"}), 409
+    
+    return jsonify({"message": "Order Placed successfully"}), 201
 # Define the route for the POST request to add comments and replies
 @app.route('/comments', methods=['POST'])
 def add_comments():

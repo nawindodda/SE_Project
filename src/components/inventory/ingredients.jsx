@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 const ingredients = [
   { name: 'Flour', quantity: '80%', purpose: 'Baking', orderItem: false },
@@ -52,7 +53,22 @@ const ingredients = [
   { name: 'Olive Oil', quantity: '70%', purpose: 'Oil', orderItem: false }
 ];
 
-const IngredientsTable = () => (
+const IngredientsTable = () => {
+const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/ingredients');
+        setData(response.data);
+      } catch (err) {
+        return;
+      }
+    };
+
+    fetchData();
+  }, []);
+return(
   <div className="container mt-5">
     <h3 className="mb-3" style={{ color: "#14738c" }}>
         Ingredients
@@ -67,7 +83,7 @@ const IngredientsTable = () => (
         </tr>
       </thead>
       <tbody>
-        {ingredients.map((ingredient, index) => (
+        {data && data.length>0 && data.map((ingredient, index) => (
           <tr key={index}>
             <td>{ingredient.name}</td>
             <td>{ingredient.quantity}</td>
@@ -79,5 +95,6 @@ const IngredientsTable = () => (
     </table>
   </div>
 );
+}
 
 export default IngredientsTable;

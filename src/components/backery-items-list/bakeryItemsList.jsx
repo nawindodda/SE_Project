@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import './bakeryItemsList.css'
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const bakeryItems = [
   {
@@ -149,28 +152,59 @@ const bakeryItems = [
 ];
 
 function BackeryItemsList() {
-  const [items, setItems] = useState(bakeryItems);
+  // const [items, setItems] = useState([]);
+
+  const [data, setData] = useState([]);
+  const [loading ,  setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/bakery');
+        setData(response.data);
+        setTimeout(() =>{
+          setLoading(true)
+        }, 5000)
+      } catch (err) {
+        return;
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   const handleIncrease = (index) => {
-    const newItems = [...items];
-    newItems[index].quantity += 1;
-    setItems(newItems);
+    const newItems = [...data];
+    newItems[index].quantity = parseInt(newItems[index].quantity, 10) + 1;
+    setData(newItems);
   };
 
   const handleDecrease = (index) => {
-    const newItems = [...items];
+    const newItems = [...data];
     if (newItems[index].quantity > 0) {
-      newItems[index].quantity -= 1;
+      newItems[index].quantity = parseInt(newItems[index].quantity, 10) - 1;
     }
-    setItems(newItems);
+    setData(newItems);
   };
   return (
+    <React.Fragment>
+    {!loading?(
+    <div class="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>):(
     <div className="container mt-5">
+      
+      <div className="place-order">
       <h3 className="mb-3" style={{ color: "#14738c" }}>
         Bakery Items
       </h3>
+      <button className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}><Link to="/orders">Place Order</Link></button>
+      </div>
       <div className="row">
-        {bakeryItems.map((item, index) => (
+        {data && data.length>0 && data.map((item, index) => (
           <div className="col-md-4 col-sm-6 my-2" key={item.name}>
             <div className="card h-100">
               <img
@@ -207,7 +241,8 @@ function BackeryItemsList() {
           </div>
         ))}
       </div>
-    </div>
+    </div>)}
+    </React.Fragment>
   );
 }
 export default BackeryItemsList;
