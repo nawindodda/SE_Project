@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './bakeryItemsList.css'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
 const bakeryItems = [
   {
     name: "Chocolate Cake",
@@ -195,7 +194,7 @@ function BackeryItemsList() {
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>):(
-    <div className="container mt-5">
+    <div className="container mt-5" >
       
       <div className="place-order">
       <h3 className="mb-3" style={{ color: "#14738c" }}>

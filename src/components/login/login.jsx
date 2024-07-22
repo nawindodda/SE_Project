@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './login.css';
+
 const Login = ({loggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,7 +39,7 @@ const Login = ({loggedIn}) => {
 
 
   return (
-    <div className="container">
+    <div className="container bg-image">
       <ToastContainer/>
       <div className="row justify-content-center">
         <div className="col-md-6">

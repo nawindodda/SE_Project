@@ -64,6 +64,7 @@ const SignUp = () => {
   };
 
   return (
+    <div className="bg-image">
     <div className="sign-up-container">
       <ToastContainer/>
       <h2>Sign Up</h2>
@@ -114,6 +115,7 @@ const SignUp = () => {
         </div>
         <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}>Sign Up</button>
       </form>
+    </div>
     </div>
   );
 };

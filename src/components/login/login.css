@@ -1,0 +1,7 @@
+.bg-image {
+  height: 100vh; /* Full viewport height */
+  background-image: url("../../assets/bg-image.jpg"); /* Replace with your image URL */
+  background-size: cover; /* Ensure the image covers the whole container */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+}
