@@ -11,7 +11,8 @@ const SignUp = () => {
     username: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role:''
   });
 
   const [errors, setErrors] = useState({});
@@ -34,6 +35,8 @@ const SignUp = () => {
       errors.confirmPassword = 'Confirm password is required';
     } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
+    } else if (!formData.role) {
+      errors.role = 'Role is required';
     }
     return errors;
   };
@@ -113,6 +116,29 @@ const SignUp = () => {
           />
           {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
         </div>
+        <div>
+                <label>
+                    <input
+                        type="radio"
+                        value="user"
+                        checked={formData.role === 'user'}
+                        onChange={handleChange}
+                    />
+                    &nbsp;&nbsp;User
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input
+                        type="radio"
+                        value="admin"
+                        checked={formData.role === 'admin'}
+                        onChange={handleChange}
+                    />
+                    &nbsp;&nbsp;Admin
+                </label>
+                {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+            </div>
         <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}>Sign Up</button>
       </form>
     </div>

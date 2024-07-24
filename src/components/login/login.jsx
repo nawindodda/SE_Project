@@ -9,6 +9,7 @@ import './login.css';
 const Login = ({loggedIn}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [invalid, setInvalid] = useState('')
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -23,10 +24,8 @@ const Login = ({loggedIn}) => {
         toast.success('Logged in successfully!');
         navigate('/backeryItemsList');
         loggedIn(true)
-        debugger
-        console.log('vkbfhvbfhv', response)
       } catch (err) {
-        debugger
+        setInvalid('Invalid Credentials')
         //toast.error('Data submitted successfully!');
         return;
       }
@@ -68,6 +67,7 @@ const Login = ({loggedIn}) => {
                     required
                   />
                 </div>
+                <span style={{color:'red'}}>{invalid}</span>
                 <div className='d-flex'>
                 <button type="submit" className="btn btn-primary btn-block mt-4">Login</button>&nbsp;
                 <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}><Link to="/signup">Sign Up</Link></button>
