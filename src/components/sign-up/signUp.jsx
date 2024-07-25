@@ -6,13 +6,12 @@ import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const SignUp = () => {
   const navigate = useNavigate();
-
+  const [role, setRole] = useState('')
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: '',
-    role:''
   });
 
   const [errors, setErrors] = useState({});
@@ -21,6 +20,10 @@ const SignUp = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const handleChange1 = (e) =>{
+    setRole(e.target.value)
+  }
 
   const validate = () => {
     const errors = {};
@@ -35,9 +38,7 @@ const SignUp = () => {
       errors.confirmPassword = 'Confirm password is required';
     } else if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
-    } else if (!formData.role) {
-      errors.role = 'Role is required';
-    }
+    } 
     return errors;
   };
 
@@ -49,7 +50,6 @@ const SignUp = () => {
         try {
           const response = await axios.post('http://localhost:5000/signup', formData);
           toast.success('User Created successfully!');
-          console.log('vkbfhvbfhv', response)
           navigate('/login');
           // setData(response.data);
         } catch (err) {
@@ -121,8 +121,8 @@ const SignUp = () => {
                     <input
                         type="radio"
                         value="user"
-                        checked={formData.role === 'user'}
-                        onChange={handleChange}
+                        checked={role === 'user'}
+                        onChange={handleChange1}
                     />
                     &nbsp;&nbsp;User
                 </label>
@@ -132,12 +132,11 @@ const SignUp = () => {
                     <input
                         type="radio"
                         value="admin"
-                        checked={formData.role === 'admin'}
-                        onChange={handleChange}
+                        checked={role === 'admin'}
+                        onChange={handleChange1}
                     />
                     &nbsp;&nbsp;Admin
                 </label>
-                {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
             </div>
         <button type="submit" className="btn btn btn-block mt-4" style={{border:'1px solid #ccc'}}>Sign Up</button>
       </form>
